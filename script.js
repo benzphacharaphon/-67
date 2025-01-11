@@ -1,5 +1,24 @@
+// Import the necessary Firebase modules
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, push } from "firebase/database";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBGptyFg34K5rY4BZdJOLCFgjqq4rG9P0",
+    authDomain: "dooyaischoolblessings.firebaseapp.com",
+    databaseURL: "https://dooyaischoolblessings-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "dooyaischoolblessings",
+    storageBucket: "dooyaischoolblessings.appspot.com",
+    messagingSenderId: "1003915601288",
+    appId: "1:1003915601288:web:284b05585e3dba79a1c63d"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
 document.addEventListener('DOMContentLoaded', function () {
-    // ฟังก์ชันสำหรับบันทึกข้อมูลการลงนาม
+    // Handle the form submission
     const form = document.getElementById('signForm');
 
     if (form) {
@@ -23,75 +42,66 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const type = typeElement.value;
             const finalType = type === "อื่น ๆ" ? otherType : type;
-
-            const signData = JSON.parse(localStorage.getItem('signData')) || [];
             const currentDate = new Date().toLocaleDateString();
             const currentTime = new Date().toLocaleTimeString();
 
-           // สร้างข้อมูลสำหรับส่งไปยัง API
-        const payload = {
-            name,
-            organization,
-            type: finalType,
-            date: currentDate,
-            time: currentTime
-        };
+            // Prepare the payload for Firebase
+            const payload = {
+                name,
+                organization,
+                type: finalType,
+                date: currentDate,
+                time: currentTime
+            };
 
-        try {
-            // แทนที่ URL ด้านล่างด้วย API endpoint ของคุณ
-            const apiUrl = "https://example.com/api/signatures";
+            try {
+                // Save the data to Firebase Realtime Database
+                const dbRef = ref(database, 'signatures');
+                await push(dbRef, payload);
 
-            // ส่งข้อมูลไปยัง API ด้วย HTTP POST
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
-                // เมื่อบันทึกสำเร็จให้เปลี่ยนหน้าไปยัง success.html
+                // Redirect to success page
                 window.location.href = "success.html";
-            } else {
-                // แสดงข้อความเมื่อเกิดข้อผิดพลาด
-                const errorData = await response.json();
-                alert(`เกิดข้อผิดพลาด: ${errorData.message || "ไม่สามารถบันทึกข้อมูลได้"}`);
+            } catch (error) {
+                console.error("Error saving to Firebase:", error);
+                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
             }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("เกิดข้อผิดพลาดในการเชื่อมต่อ API");
-        }
-    });
-}
+        });
+    }
 
-    // ฟังก์ชันสำหรับดาวน์โหลดข้อมูลผู้ลงนาม
+    // Handle data export
     const exportButton = document.getElementById('exportButton');
 
     if (exportButton) {
-        exportButton.addEventListener('click', function () {
-            // ดึงข้อมูลจาก Local Storage
-            const signData = JSON.parse(localStorage.getItem('signData')) || [];
+        exportButton.addEventListener('click', async function () {
+            try {
+                // Fetch data from Firebase
+                const dbRef = ref(database, 'signatures');
+                const snapshot = await dbRef.once('value');
+                const data = snapshot.val();
 
-            if (signData.length === 0) {
-                alert("ไม่มีข้อมูลสำหรับการดาวน์โหลด");
-                return;
+                if (!data) {
+                    alert("ไม่มีข้อมูลสำหรับการดาวน์โหลด");
+                    return;
+                }
+
+                // Convert data to array
+                const signData = Object.values(data);
+
+                // Use SheetJS to create and download the Excel file
+                const worksheet = XLSX.utils.json_to_sheet(signData);
+                XLSX.utils.sheet_add_aoa(worksheet, [
+                    ["ชื่อ-นามสกุล", "หน่วยงาน/ที่อยู่", "ประเภท", "วันที่ลงนาม", "เวลาที่ลงนาม"]
+                ], { origin: "A1" });
+
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "รายชื่อผู้ลงนาม");
+
+                XLSX.writeFile(workbook, "รายชื่อผู้ลงนาม.xlsx");
+            } catch (error) {
+                console.error("Error exporting data:", error);
+                alert("เกิดข้อผิดพลาดในการดาวน์โหลดข้อมูล");
             }
-
-            // ใช้ SheetJS สร้าง Worksheet
-            const worksheet = XLSX.utils.json_to_sheet(signData);
-
-            // เพิ่ม Header แบบกำหนดเอง
-            XLSX.utils.sheet_add_aoa(worksheet, [
-                ["ชื่อ-นามสกุล", "หน่วยงาน/ที่อยู่", "ประเภท", "วันที่ลงนาม", "เวลาที่ลงนาม"]
-            ], { origin: "A1" });
-
-            // สร้าง Workbook
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "รายชื่อผู้ลงนาม");
-
-            // ดาวน์โหลดไฟล์ Excel
-            XLSX.writeFile(workbook, "รายชื่อผู้ลงนาม.xlsx");
         });
     }
 });
+
