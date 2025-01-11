@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - ดาวน์โหลดข้อมูลผู้ลงนาม</title>
     <link rel="stylesheet" href="style.css">
+    <!-- SheetJS สำหรับสร้างไฟล์ Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -13,6 +14,61 @@
         <p class="hero-subtitle">จัดการและดาวน์โหลดข้อมูลผู้ลงนามทั้งหมดในระบบ</p>
         <button id="exportButton" class="hero-button admin-button">Download Excel</button>
     </header>
-    <script src="script.js"></script>
+
+    <!-- เชื่อมโยง Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBGptyFg34K5rY4BZdJOLCFgjqq4rG9P0",
+            authDomain: "dooyaischoolblessings.firebaseapp.com",
+            databaseURL: "https://dooyaischoolblessings-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "dooyaischoolblessings",
+            storageBucket: "dooyaischoolblessings.appspot.com",
+            messagingSenderId: "1003915601288",
+            appId: "1:1003915601288:web:284b05585e3dba79a1c63d"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // ฟังก์ชันสำหรับดาวน์โหลดข้อมูลเป็น Excel
+        document.getElementById('exportButton').addEventListener('click', async function () {
+            try {
+                // ดึงข้อมูลจาก Firebase
+                const dbRef = ref(database, 'signatures');
+                const snapshot = await get(dbRef);
+                const data = snapshot.val();
+
+                if (!data) {
+                    alert("ไม่มีข้อมูลสำหรับการดาวน์โหลด");
+                    return;
+                }
+
+                // แปลงข้อมูล Firebase เป็น array
+                const signData = Object.values(data);
+
+                // ใช้ SheetJS สร้างไฟล์ Excel
+                const worksheet = XLSX.utils.json_to_sheet(signData);
+
+                // เพิ่ม header ให้ตาราง
+                XLSX.utils.sheet_add_aoa(worksheet, [
+                    ["ชื่อ-นามสกุล", "หน่วยงาน/ที่อยู่", "ประเภท", "วันที่ลงนาม", "เวลาที่ลงนาม"]
+                ], { origin: "A1" });
+
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "รายชื่อผู้ลงนาม");
+
+                // ดาวน์โหลดไฟล์ Excel
+                XLSX.writeFile(workbook, "รายชื่อผู้ลงนาม.xlsx");
+            } catch (error) {
+                console.error("Error exporting data:", error);
+                alert("เกิดข้อผิดพลาดในการดาวน์โหลดข้อมูล");
+            }
+        });
+    </script>
 </body>
 </html>
