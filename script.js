@@ -25,16 +25,17 @@ document.addEventListener('DOMContentLoaded', function () {
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
+            // Collect form data
             const name = document.getElementById('name').value.trim();
             const organization = document.getElementById('organization').value.trim();
             const typeElement = document.querySelector('input[name="type"]:checked');
             const otherType = document.getElementById('otherType').value.trim();
 
+            // Validate form inputs
             if (!name) {
                 alert("กรุณากรอกชื่อ-นามสกุล");
                 return;
             }
-
             if (!typeElement) {
                 alert("กรุณาเลือกประเภท");
                 return;
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentDate = new Date().toLocaleDateString();
             const currentTime = new Date().toLocaleTimeString();
 
+            // Prepare data payload
             const payload = {
                 name,
                 organization,
@@ -69,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle data export
     const exportButton = document.getElementById('exportButton');
-
     if (exportButton) {
         exportButton.addEventListener('click', async function () {
             try {
@@ -83,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                // Convert data to array
+                // Convert data to an array
                 const signData = Object.values(data);
 
                 // Use SheetJS to create and download the Excel file
