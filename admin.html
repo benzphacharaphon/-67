@@ -49,16 +49,18 @@
                 }
 
                 // แปลงข้อมูล Firebase เป็น array
-                const signData = Object.values(data);
+                const signData = Object.values(data).map(item => ({
+                    "ชื่อ-นามสกุล": item.name || "ไม่ระบุ",
+                    "หน่วยงาน/ที่อยู่": item.organization || "ไม่ระบุ",
+                    "ประเภท": item.type || "ไม่ระบุ",
+                    "วันที่ลงนาม": item.date || "ไม่ระบุ",
+                    "เวลาที่ลงนาม": item.time || "ไม่ระบุ"
+                }));
 
                 // ใช้ SheetJS สร้างไฟล์ Excel
                 const worksheet = XLSX.utils.json_to_sheet(signData);
 
-                // เพิ่ม header ให้ตาราง
-                XLSX.utils.sheet_add_aoa(worksheet, [
-                    ["ชื่อ-นามสกุล", "หน่วยงาน/ที่อยู่", "ประเภท", "วันที่ลงนาม", "เวลาที่ลงนาม"]
-                ], { origin: "A1" });
-
+                // สร้าง Workbook และเพิ่ม Worksheet
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, "รายชื่อผู้ลงนาม");
 
@@ -72,3 +74,4 @@
     </script>
 </body>
 </html>
+
