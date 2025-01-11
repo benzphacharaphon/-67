@@ -58,7 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 // Save data to Firebase
                 const dbRef = ref(database, 'signatures');
-                await push(dbRef, payload);
+                const newRef = await push(dbRef, payload);
+
+                // Debug: Log key of the new entry
+                console.log("Data saved successfully to Firebase:", newRef.key);
 
                 // Redirect to success page
                 window.location.href = "success.html";
@@ -87,6 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Convert data to an array
                 const signData = Object.values(data);
 
+                // Debug: Log data fetched for export
+                console.log("Data fetched for export:", signData);
+
                 // Use SheetJS to create and download the Excel file
                 const worksheet = XLSX.utils.json_to_sheet(signData);
                 XLSX.utils.sheet_add_aoa(worksheet, [
@@ -104,3 +110,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
