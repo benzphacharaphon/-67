@@ -9,6 +9,7 @@
         // Import Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getDatabase, ref, push, get } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+        import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.19.0/package/xlsx.mjs";
 
         // Firebase Configuration
         const firebaseConfig = {
