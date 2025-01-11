@@ -5,6 +5,7 @@ body {
     padding: 0;
     background-image: url('image/imagesBG.jpg');
     background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
     color: white;
     text-align: center;
@@ -16,7 +17,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9); /* เพิ่มเงาให้หนาขึ้น */
+    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9);
     padding: 20px;
 }
 
@@ -31,19 +32,19 @@ body {
 }
 
 .hero-button {
-    font-size: 1.5rem; /* ขยายขนาดตัวหนังสือ */
+    font-size: 1.5rem;
     color: white;
     text-decoration: none;
     padding: 15px 30px;
-    border: 3px solid white; /* ขยายขอบสีขาว */
+    border: 3px solid white;
     border-radius: 5px;
     transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3); /* เพิ่มเงาแสงรอบปุ่ม */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
 }
 
 .hero-button:hover {
     background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 255, 255, 0.5); /* เพิ่มแสงสว่างรอบปุ่มเมื่อ Hover */
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 255, 255, 0.5);
     transform: scale(1.1);
 }
 
@@ -52,29 +53,11 @@ form {
     background: rgba(255, 255, 255, 0.9);
     padding: 30px;
     text-align: left;
-    max-width: 850px; /* ขยายกรอบสีขาวให้กว้างขึ้น */
+    max-width: 850px;
     margin: 90px auto;
     border-radius: 20px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     color: black;
-}
-
-/* หัวข้อ */
-.form-header-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.form-header {
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0 0 10px;
-}
-
-.sub-header {
-    font-size: 1.5rem; /* ขนาดเล็กลงสำหรับข้อความย่อย */
-    margin: 0;
-    color: black; /* สีดำ แต่ไม่ต้องตัวหนา */
 }
 
 label {
@@ -92,22 +75,23 @@ input[type="text"] {
     border-radius: 5px;
 }
 
+/* ส่วนเลือกประเภท */
 #type {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* เพิ่มระยะห่างระหว่างตัวเลือก */
+    gap: 10px;
 }
 
 #type label {
     display: flex;
     align-items: center;
     font-size: 1.5rem;
-    gap: 10px; /* เพิ่มระยะห่างระหว่างวงกลมและข้อความ */
+    gap: 10px;
     margin-bottom: 10px;
 }
 
 #type input[type="radio"] {
-    width: 24px; /* ขยายขนาดวงกลม */
+    width: 24px;
     height: 24px;
     margin-right: 10px;
     appearance: none;
@@ -115,36 +99,14 @@ input[type="text"] {
     border-radius: 50%;
     outline: none;
     cursor: pointer;
-    display: inline-block;
-    position: relative;
 }
 
 #type input[type="radio"]:checked {
-    background-color: #00cc66; /* เปลี่ยนเป็นสีเขียวเมื่อเลือก */
-    border: 6px solid #00cc66; /* ขยายขอบเมื่อเลือก */
+    background-color: #00cc66;
+    border: 6px solid #00cc66;
 }
 
-#type input[type="radio"]:checked::after {
-    content: "✓";
-    font-size: 16px;
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.other-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.other-option input[type="text"] {
-    flex: 1; /* ขยายกรอบข้อความ */
-}
-
-/* ปุ่ม */
+/* ปุ่มส่งฟอร์ม */
 .form-button {
     font-size: 1.3rem;
     padding: 15px 30px;
@@ -160,35 +122,39 @@ input[type="text"] {
 
 .form-button:hover {
     background: rgba(0, 0, 255, 1);
-    transform: scale(1.05); /* Action ขยายเมื่อกด */
+    transform: scale(1.05);
 }
 
 /* สำหรับ Success Page */
 .success-content {
-    max-width: 700px; /* ขยายกรอบสีขาว */
+    max-width: 700px;
     margin: auto;
-    background: rgba(255, 255, 255, 0.9); /* เพิ่มความเข้ม */
-    padding: 30px; /* เพิ่ม Padding */
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* ปรับเงาให้เหมือนกับ form.html */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     text-align: center;
-    margin-top: 10%; /* ขยับกรอบให้อยู่ตรงกลางหน้าจอ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-.success-content p {
-    font-size: 1.5rem; /* ขยายขนาดข้อความ */
-    margin: 20px 0;
-    color: black; /* เปลี่ยนเป็นสีดำ */
+.success-highlight {
+    font-weight: bold;
+    color: green;
+    text-decoration: underline;
 }
 
 /* ปุ่มกลับหน้าแรก */
 .return-button {
     display: inline-block;
-    font-size: 1.5rem; /* ขยายตัวหนังสือ */
-    padding: 15px 30px; /* ขยายขนาดปุ่ม */
-    background: rgba(0, 0, 255, 0.8); /* สีฟ้าเข้ม */
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    background: rgba(0, 0, 255, 0.8);
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.5); /* ขอบสีขาวบาง */
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
@@ -197,56 +163,24 @@ input[type="text"] {
 }
 
 .return-button:hover {
-    background: rgba(0, 0, 255, 1); /* สีฟ้าเข้มขึ้นเมื่อ Hover */
-    transform: scale(1.05); /* Action ขยายเมื่อกด */
-}
-/* ข้อความเน้นสีเขียว */
-.success-highlight {
-    font-weight: bold;
-    color: green;
-    text-decoration: underline;
+    background: rgba(0, 0, 255, 1);
+    transform: scale(1.05);
 }
 
-/* ปุ่มสำหรับ Admin */
-.admin-button {
+/* สำหรับปุ่ม Export */
+#exportButton {
     font-size: 1.5rem;
-    color: white;
-    background: none;
-    text-decoration: none;
-    padding: 15px 30px;
-    border: 2px solid green;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: green;
+    border: 2px solid #fff;
     border-radius: 5px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 128, 0, 0.5);
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.admin-button:hover {
-    background: rgba(0, 255, 0, 0.2);
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-    transform: scale(1.1); /* ขยายปุ่มเมื่อ Hover */
+#exportButton:hover {
+    background-color: darkgreen;
+    transform: scale(1.1);
 }
-
-// Export ข้อมูลเป็น Excel
-document.getElementById('exportButton').addEventListener('click', function () {
-    // ดึงข้อมูลจาก Local Storage
-    const signData = JSON.parse(localStorage.getItem('signData')) || [];
-    if (signData.length === 0) {
-        alert("ไม่มีข้อมูลสำหรับการดาวน์โหลด");
-        return;
-    }
-
-    // ใช้ SheetJS สร้าง Worksheet
-    const worksheet = XLSX.utils.json_to_sheet(signData);
-
-    // เพิ่ม Header แบบกำหนดเอง
-    XLSX.utils.sheet_add_aoa(worksheet, [
-        ["ชื่อ-นามสกุล", "หน่วยงาน/ที่อยู่", "ประเภท", "วันที่ลงนาม", "เวลาที่ลงนาม"]
-    ], { origin: "A1" });
-
-    // สร้าง Workbook
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "รายชื่อผู้ลงนาม");
-
-    // ดาวน์โหลดไฟล์ Excel
-    XLSX.writeFile(workbook, "รายชื่อผู้ลงนาม.xlsx");
-});
