@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, push, get } from "firebase/database";
 
-// Your Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBGptyFg34K5rY4BZdJOLCFgjqq4rG9P0",
     authDomain: "dooyaischoolblessings.firebaseapp.com",
@@ -20,15 +20,13 @@ const database = getDatabase(app);
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed");
 
-    // Handle form submission
+    // Handle the form submission
     const form = document.getElementById('signForm');
     if (form) {
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-
             console.log("Form submission triggered");
 
-            // Collect form data
             const name = document.getElementById('name').value.trim();
             const organization = document.getElementById('organization').value.trim();
             const typeElement = document.querySelector('input[name="type"]:checked');
@@ -47,22 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 time: new Date().toLocaleTimeString()
             };
 
-            console.log("Payload prepared:", payload);
-
             try {
                 const dbRef = ref(database, 'signatures');
                 await push(dbRef, payload);
-                console.log("Data saved successfully to Firebase:", payload);
-
-                // Redirect to success page
+                console.log("Data saved successfully:", payload);
                 window.location.href = "success.html";
             } catch (error) {
                 console.error("Error saving data:", error);
                 alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
             }
         });
-    } else {
-        console.error("Form not found in DOM");
     }
 
     // Handle export button
@@ -99,7 +91,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert("เกิดข้อผิดพลาดในการดาวน์โหลดข้อมูล");
             }
         });
-    } else {
-        console.error("Export button not found in DOM");
     }
 });
