@@ -1,6 +1,6 @@
 // Import the necessary Firebase modules
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push } from "firebase/database";
+import { getDatabase, ref, push, get } from "firebase/database";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentDate = new Date().toLocaleDateString();
             const currentTime = new Date().toLocaleTimeString();
 
-            // Prepare the payload for Firebase
             const payload = {
                 name,
                 organization,
@@ -55,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             };
 
             try {
-                // Save the data to Firebase Realtime Database
+                // Save data to Firebase
                 const dbRef = ref(database, 'signatures');
                 await push(dbRef, payload);
 
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 // Fetch data from Firebase
                 const dbRef = ref(database, 'signatures');
-                const snapshot = await dbRef.once('value');
+                const snapshot = await get(dbRef);
                 const data = snapshot.val();
 
                 if (!data) {
@@ -104,4 +103,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
