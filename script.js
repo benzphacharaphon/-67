@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('signForm');
 
     if (form) {
-        form.addEventListener('submit', function (event) {
+        form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const name = document.getElementById('name').value.trim();
@@ -28,18 +28,42 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentDate = new Date().toLocaleDateString();
             const currentTime = new Date().toLocaleTimeString();
 
-            signData.push({
-                name,
-                organization,
-                type: finalType,
-                date: currentDate,
-                time: currentTime
+           // สร้างข้อมูลสำหรับส่งไปยัง API
+        const payload = {
+            name,
+            organization,
+            type: finalType,
+            date: currentDate,
+            time: currentTime
+        };
+
+        try {
+            // แทนที่ URL ด้านล่างด้วย API endpoint ของคุณ
+            const apiUrl = "https://example.com/api/signatures";
+
+            // ส่งข้อมูลไปยัง API ด้วย HTTP POST
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
             });
 
-            localStorage.setItem('signData', JSON.stringify(signData));
-            window.location.href = "success.html";
-        });
-    }
+            if (response.ok) {
+                // เมื่อบันทึกสำเร็จให้เปลี่ยนหน้าไปยัง success.html
+                window.location.href = "success.html";
+            } else {
+                // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+                const errorData = await response.json();
+                alert(`เกิดข้อผิดพลาด: ${errorData.message || "ไม่สามารถบันทึกข้อมูลได้"}`);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("เกิดข้อผิดพลาดในการเชื่อมต่อ API");
+        }
+    });
+}
 
     // ฟังก์ชันสำหรับดาวน์โหลดข้อมูลผู้ลงนาม
     const exportButton = document.getElementById('exportButton');
