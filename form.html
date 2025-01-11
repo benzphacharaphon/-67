@@ -15,25 +15,26 @@
             </div>
 
             <label for="name">ชื่อ-นามสกุล <span class="required">*</span></label>
-            <input type="text" id="name" name="name" placeholder="โปรดระบุชื่อ-นามสกุล" required><br>
+            <input type="text" id="name" name="name" placeholder="เช่น: นายเรียนดี มีความสุข" required><br>
 
             <label for="organization">หน่วยงาน/ที่อยู่</label>
-            <input type="text" id="organization" name="organization" placeholder="โปรดระบุหน่วยงาน/ที่อยู่"><br>
+            <input type="text" id="organization" name="organization" placeholder="เช่น: โรงเรียนบ้านดู่ใหญ่"><br>
 
-            <label>ประเภท</label>
-            <div id="type">
+            <fieldset>
+                <legend>ประเภท</legend>
                 <label><input type="radio" name="type" value="นักเรียน" required> นักเรียน</label>
-                <label><input type="radio" name="type" value="ครูหรือบุคลากรทางการศึกษา"> ครูหรือบุคลากรทางการศึกษา</label>
-                <label><input type="radio" name="type" value="บุคคลทั่วไป"> บุคคลทั่วไป</label>
+                <label><input type="radio" name="type" value="ครูหรือบุคลากรทางการศึกษา" required> ครูหรือบุคลากรทางการศึกษา</label>
+                <label><input type="radio" name="type" value="บุคคลทั่วไป" required> บุคคลทั่วไป</label>
                 <label class="other-option">
-                    <input type="radio" name="type" value="อื่น ๆ"> อื่น ๆ
-                    <input type="text" id="otherType" name="otherType" placeholder="โปรดระบุประเภท">
+                    <input type="radio" name="type" value="อื่น ๆ" id="otherRadio" required> อื่น ๆ
+                    <input type="text" id="otherType" name="otherType" placeholder="โปรดระบุประเภท" disabled>
                 </label>
-            </div><br>
+            </fieldset><br>
 
             <button type="submit" class="form-button">บันทึกการลงนาม</button>
         </form>
     </main>
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
+
